@@ -1,0 +1,17 @@
+{
+    "contents" : "Q = 10\nmu = 1\nsigma = 1\npr = 3\npw = 1\nalpha = .3\neta = 4\nbeta = .95\nN = 1000\n\n# rob had bug with iterated chebappx\n# appf<- chebappxf(f) %>% vectorize",
+    "created" : 1416607925842.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2191118986",
+    "id" : "24AE0F19",
+    "lastKnownWriteTime" : 1416608197,
+    "path" : "~/Projects/OPNS 523/Aguirregabiria-1999/code/simulateData.R",
+    "project_path" : "simulateData.R",
+    "properties" : {
+        "tempName" : "Untitled1"
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
