@@ -1,13 +1,13 @@
 {
-    "contents" : "Q = 10\nmu = 1\nsigma = 1\npr = 3\npw = 1\nalpha = .3\neta = 4\nbeta = .95\nN = 1000\n\n# rob had bug with iterated chebappx\n# appf<- chebappxf(f) %>% vectorize",
+    "contents" : "Q = 10\nmu = 1\nsigma = 1\npr = 3\npw = 1\nalpha = .3\neta = 4\nbeta = .95\nN = 1000\ndims = 12\n\n# rob had bug with iterated chebappx\n# appf<- chebappxf(f) %>% vectorize\n\npi_<- function(i, s, q){\n    pr*s - pw*q - alpha*(i - s) - eta*(q>0)\n}\n\nCCP<- data.frame(\n  key = chebknots(dims, c(0,Q))[[1]],\n  prob_order = runif(dims)\n)\n\n# Testing chebappxf. Update key to i later and figure out where to get s.\nf<- function(key){\n  CCP$prob_order[CCP$key==key]\n}\n\nf_tilda<- chebappxf(f, dims, c(0,Q))\nf_tilda(5.65263096)  #When this returns the corresponding CCP we know we're using chebappxf correctly.\nCCP$prob_order[6] #Corresponding CCP\nf_tilda(5.7) #Especially when this is also giving a close result!\nevalongrid(f_tilda,grid = expand.grid(chebknots(dims,c(0,Q)))) #And this returns the exact corresponding values.\n\n",
     "created" : 1416607925842.000,
     "dirty" : false,
     "encoding" : "UTF-8",
     "folds" : "",
-    "hash" : "2191118986",
+    "hash" : "4294884400",
     "id" : "24AE0F19",
-    "lastKnownWriteTime" : 1416608197,
-    "path" : "~/Projects/OPNS 523/Aguirregabiria-1999/code/simulateData.R",
+    "lastKnownWriteTime" : 1417019937,
+    "path" : "~/Projects/OPNS 523/Aguirregabiria-1999/Aguirregabiria-1999/code/simulateData.R",
     "project_path" : "simulateData.R",
     "properties" : {
         "tempName" : "Untitled1"

@@ -1,0 +1,16 @@
+{
+    "contents" : "# Evaluate the inclusive value for arbitrarily large values\n# INPUT:  \n#     v1 = deterministic utility of option 1\n#     v2 = deterministic utility of option 2\n# OUTPUT:\n#     log(exp(v1) + exp(v2)) + gamma, the inclusive value, where gamma is Euler's constant (-digamma(1))\n\ninclusive.value <- function(v1, v2){\n  log(1 + exp(v2 - v1)) + v1 + -digamma(1)\n}\n",
+    "created" : 1417015302517.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "2229116708",
+    "id" : "228415E2",
+    "lastKnownWriteTime" : 1415981390,
+    "path" : "~/Projects/OPNS 523/Arcidiacono-2011/code/modules/inclusive.value.R",
+    "project_path" : null,
+    "properties" : {
+    },
+    "source_on_save" : false,
+    "type" : "r_source"
+}
