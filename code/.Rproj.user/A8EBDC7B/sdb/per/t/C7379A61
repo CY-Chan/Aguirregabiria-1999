@@ -1,21 +1,21 @@
 {
     "contents" : "",
-    "created" : 1417018075044.000,
+    "created" : 1417019538592.000,
     "dirty" : false,
     "encoding" : "",
     "folds" : "",
     "hash" : "0",
-    "id" : "BF332DD8",
+    "id" : "C7379A61",
     "lastKnownWriteTime" : 7741240723082584096,
     "path" : null,
     "project_path" : null,
     "properties" : {
         "caption" : "CCP",
-        "contentUrl" : "content?title=CCP&file=6d506b78e4a74f7a98e727bd325fdebf.htm",
-        "displayedObservations" : "12",
+        "contentUrl" : "content?title=CCP&file=6c658ac5802b4633ae5ca189934bcf92.htm",
+        "displayedObservations" : 12,
         "displayedVariables" : 2,
-        "totalObservations" : "12",
-        "variables" : "2"
+        "totalObservations" : 12,
+        "variables" : 2
     },
     "source_on_save" : false,
     "type" : "r_dataframe"
