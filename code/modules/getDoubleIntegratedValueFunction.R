@@ -31,7 +31,7 @@ getDoubleIntegratedValueFunction <- function(Q, mu, sigma, pr, alpha, eta, rel.e
         (pi_(i,s,Q-i+s) - log(g.old(i-s)))
       }
       # Integrate in two parts. When demand <= i, and when demand >i
-      first(integrate(function(s) form(i,s) * dlnorm(s,meanlog = mu,sdlog = sigma),0,i)) +
+      first(integrate(function(s) form(i,s) * dlnorm(s,meanlog = mu,sdlog = sigma),0,i)) + 
         first(integrate(function(s) form(i,i) * dlnorm(s,meanlog = mu,sdlog = sigma),i,Inf))
     }
     f.old <- chebappxf(f,dims = dims,intervals = c(0,Q)) 
@@ -59,7 +59,7 @@ getDoubleIntegratedValueFunction <- function(Q, mu, sigma, pr, alpha, eta, rel.e
     }
 
     VbarBar <- function(i){
-      f.old(i) + (f(Q) + gamma)/(1 - beta) + gamma
+      f.old(i) + (f.old(Q) + gamma)/(1 - beta) + gamma
     }
     VdoubleBar <- chebappxf(VbarBar,dims = dims,intervals = c(0,Q))
     
