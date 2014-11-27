@@ -6,7 +6,7 @@
 #         (2) g(i-s) for all (i-s) in [0,Q]
 #         (3) V_bar_bar(i) for all i in [0,Q]
 
-getDoubleIntegratedValueFunction <- function(rel.err = 10^-3){
+getDoubleIntegratedValueFunction <- function(Q, mu, sigma, pr, alpha, eta, rel.err = 10^-3){
     pi_<- function(i, s, q){
       pr*s - pw*q - alpha*(i - s) - eta*(q>0)
     }
