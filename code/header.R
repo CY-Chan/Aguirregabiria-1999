@@ -9,3 +9,14 @@ library('chebpol')
 library('np')
 registerDoParallel(cores=20)
 l_ply(dir(ex.mods), function(l) source(paste(ex.mods, l, sep="")))
+
+
+
+
+
+
+
+
+
+
+
