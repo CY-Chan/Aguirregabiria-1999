@@ -16,3 +16,6 @@ dims = 12
 gamma <- -digamma(1)
 
 source('header.R')
+
+# Simulate data
+data <- simdata(S = N)

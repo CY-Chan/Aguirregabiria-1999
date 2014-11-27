@@ -1,7 +1,10 @@
 # getDoubleIntegratedValueFunction()
 # 
-# INPUTS: rel.err, the closeness between iterations required for convergence of f, g, default = 10^-3
-# OUTPUTS: V_bar_bar(i) for all i in [0,Q]
+# INPUT: rel.err, the closeness between iterations required for convergence of f, g, default = 10^-3
+# OUTPUT: a list containing
+#         (1) f(i) for all i in [0,Q]
+#         (2) g(i-s) for all (i-s) in [0,Q]
+#         (3) V_bar_bar(i) for all i in [0,Q]
 
 getDoubleIntegratedValueFunction <- function(rel.err = 10^-3){
     pi_<- function(i, s, q){
@@ -48,5 +51,6 @@ getDoubleIntegratedValueFunction <- function(rel.err = 10^-3){
     VbarBar <- function(i){
       f.old(i) + (f(Q) + gamma)/(1 - beta) + gamma
     }
-    chebappxf(VbarBar,dims = dims,intervals = c(0,Q))
+    VdoubleBar <- chebappxf(VbarBar,dims = dims,intervals = c(0,Q))
+    list(f = f.old,g = g.old,VdoubleBar = VdoubleBar)
 }
