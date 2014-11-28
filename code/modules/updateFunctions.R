@@ -1,10 +1,10 @@
-g.init <- function(key){
+g.init <- function(key, CCP){
   CCP$prob_order[CCP$key == key]
 }
 
 # Relies on g.old, and therefore each time g.old/CCPs are updated, 
 # this is updated when a new chebappxf is called.
-f <- function(i){
+f <- function(i, par, g.old){
   pi_<- function(i, s, q){
     par$pr*s - pw*q - par$alpha*(i - s) - par$eta*(q>0)
   }
@@ -17,6 +17,6 @@ f <- function(i){
     first(integrate(function(s) form(i,i) * dlnorm(s,meanlog = par$mu,sdlog = par$sigma),i,Inf))
 }
 
-g <- function(x){
+g <- function(x, par, f.old){
   1/(1 + exp(pw*(Q- x) + par$eta + beta*(f.old(x) - f.old(Q))))
 }
