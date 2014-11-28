@@ -5,24 +5,7 @@
 # OUTPUT: simulated sample of N observations of {i,s,q} (data frame)
 
 simdata <- function(S,rel.err = 10^-3){
-  
-  par<- data.frame(mu = 1,
-  sigma = 1,
-  pr = 3,
-  alpha = .3,
-  eta = 4)
-  
-  # Initialize CCP, g, and f
-  # Made prob_order 0.5 for all to avoid negative CCPs
-  CCP<- data.frame(
-    key = chebknots(dims = dims, intervals = c(0,Q))[[1]],
-    prob_order = rep(0.5,dims)
-  )
-  g.old <- chebappxf(g.init,dims = dims,intervals = c(0,Q)) %>%
-    Vectorize
-  
-  f.old <- chebappxf(f,dims = dims,intervals = c(0,Q))
-  
+
   V <- getDoubleIntegratedValueFunction(rel.err)
   
   data <- data.frame(
