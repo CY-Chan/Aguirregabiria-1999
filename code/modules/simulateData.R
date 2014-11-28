@@ -5,19 +5,12 @@
 # OUTPUT: simulated sample of N observations of {i,s,q} (data frame)
 
 simdata <- function(S,rel.err = 10^-3){
-  
-  Q = 10
-  mu = 1
-  sigma = 1
-  pr = 3
-  alpha = .3
-  eta = 4
-  
-  V <- getDoubleIntegratedValueFunction(Q, mu, sigma, pr, alpha, eta, rel.err)
+
+  V <- getDoubleIntegratedValueFunction(rel.err)
   
   data <- data.frame(
     i = c(runif(1,min = 0,max = Q),rep(0,N-1)),
-    d = rlnorm(N,meanlog = mu,sdlog = sigma)
+    d = rlnorm(N,meanlog = par$mu,sdlog = par$sigma)
   ) %>%
     mutate(s = pmin(i,d),
            q = c(rbinom(1,1,V$g(first(i)-first(s))) * (Q - first(i) + first(s)),rep(0,N-1)))

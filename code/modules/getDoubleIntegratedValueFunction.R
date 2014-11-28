@@ -6,40 +6,7 @@
 #         (2) g(i-s) for all (i-s) in [0,Q]
 #         (3) V_bar_bar(i) for all i in [0,Q]
 
-getDoubleIntegratedValueFunction <- function(Q, mu, sigma, pr, alpha, eta, rel.err = 10^-3){
-    pi_<- function(i, s, q){
-      pr*s - pw*q - alpha*(i - s) - eta*(q>0)
-    }
-
-    # Initialize CCP
-    # Made prob_order 0.5 for all to avoid negative CCPs
-    CCP<- data.frame(
-      key = chebknots(dims = dims, intervals = c(0,Q))[[1]],
-      prob_order = rep(0.5,dims)
-    )
-
-    g.init <- function(key){
-      CCP$prob_order[CCP$key == key]
-    }
-    g.old <- chebappxf(g.init,dims = dims,intervals = c(0,Q)) %>%
-      Vectorize
-
-    # Relies on g.old, and therefore each time g.old/CCPs are updated, 
-    # this is updated when a new chebappxf is called.
-    f <- function(i){
-      form<- function(i,s){
-        (pi_(i,s,Q-i+s) - log(g.old(i-s)))
-      }
-      # Integrate in two parts. When demand <= i, and when demand >i
-      first(integrate(function(s) form(i,s) * dlnorm(s,meanlog = mu,sdlog = sigma),0,i)) + 
-        first(integrate(function(s) form(i,i) * dlnorm(s,meanlog = mu,sdlog = sigma),i,Inf))
-    }
-    f.old <- chebappxf(f,dims = dims,intervals = c(0,Q)) 
-
-    g <- function(x){
-      1/(1 + exp(pw*(Q- x) + eta + beta*(f.old(x) - f.old(Q))))
-    }
-
+getDoubleIntegratedValueFunction <- function(rel.err = 10^-3){
     delta <- 1 + rel.err
     # Run until both f and CCPs converge, testing by comparing 100 different random points each time.
     while (delta > rel.err){
