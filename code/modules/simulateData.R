@@ -6,18 +6,28 @@
 
 simdata <- function(S,rel.err = 10^-3){
   
-  Q = 10
-  mu = 1
-  sigma = 1
-  pr = 3
-  alpha = .3
-  eta = 4
+  par<- data.frame(mu = 1,
+  sigma = 1,
+  pr = 3,
+  alpha = .3,
+  eta = 4)
   
-  V <- getDoubleIntegratedValueFunction(Q, mu, sigma, pr, alpha, eta, rel.err)
+  # Initialize CCP, g, and f
+  # Made prob_order 0.5 for all to avoid negative CCPs
+  CCP<- data.frame(
+    key = chebknots(dims = dims, intervals = c(0,Q))[[1]],
+    prob_order = rep(0.5,dims)
+  )
+  g.old <- chebappxf(g.init,dims = dims,intervals = c(0,Q)) %>%
+    Vectorize
+  
+  f.old <- chebappxf(f,dims = dims,intervals = c(0,Q))
+  
+  V <- getDoubleIntegratedValueFunction(rel.err)
   
   data <- data.frame(
     i = c(runif(1,min = 0,max = Q),rep(0,N-1)),
-    d = rlnorm(N,meanlog = mu,sdlog = sigma)
+    d = rlnorm(N,meanlog = par$mu,sdlog = par$sigma)
   ) %>%
     mutate(s = pmin(i,d),
            q = c(rbinom(1,1,V$g(first(i)-first(s))) * (Q - first(i) + first(s)),rep(0,N-1)))
