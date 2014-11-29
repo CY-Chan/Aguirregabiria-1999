@@ -5,8 +5,13 @@
 # OUTPUT: simulated sample of N observations of {i,s,q} (data frame)
 
 simdata <- function(S,rel.err = 10^-3){
-
-  V <- getDoubleIntegratedValueFunction(rel.err)
+  par<- list(mu = 1,
+             sigma = 1,
+             pr = 3,
+             alpha = .3,
+             eta = 4)
+  
+  V <- getDoubleIntegratedValueFunction(par, rel.err)
   
   data <- data.frame(
     i = c(runif(1,min = 0,max = Q),rep(0,N-1)),
