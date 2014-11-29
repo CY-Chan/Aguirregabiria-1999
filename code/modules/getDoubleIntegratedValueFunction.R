@@ -6,7 +6,7 @@
 #         (2) g(i-s) for all (i-s) in [0,Q]
 #         (3) V_bar_bar(i) for all i in [0,Q]
 
-getDoubleIntegratedValueFunction <- function(par,rel.err = 10^-3){
+getDoubleIntegratedValueFunction <- function(theta1,theta2,rel.err = 10^-3){
   
   # Initialize CCP, g, and f
   # Made prob_order 0.5 for all to avoid negative CCPs
@@ -18,7 +18,7 @@ getDoubleIntegratedValueFunction <- function(par,rel.err = 10^-3){
   g.old <- chebappxf(g.init,dims = dims,intervals = c(0,Q), CCP = CCP) %>%
     Vectorize
   
-  f.old <- chebappxf(f,dims = dims,intervals = c(0,Q), par = par, g.old = g.old) %>% 
+  f.old <- chebappxf(f,dims = dims,intervals = c(0,Q), theta1 = theta1, theta2 = theta2, g.old = g.old) %>% 
     Vectorize
   
   delta <- 1 + rel.err
@@ -26,9 +26,9 @@ getDoubleIntegratedValueFunction <- function(par,rel.err = 10^-3){
   while (delta > rel.err){
     # When calling chebappxf here, it is essentially updating g taking into account the updated f, 
     # and updating f taking into account the updated g.
-    g.new <- chebappxf(g,dims,c(0,Q), par = par, f.old = f.old) %>%
+    g.new <- chebappxf(g,dims,c(0,Q), theta2 = theta2, f.old = f.old) %>%
       Vectorize
-    f.new <- chebappxf(f,dims,c(0,Q), par = par, g.old = g.old) %>%
+    f.new <- chebappxf(f,dims,c(0,Q), theta1 = theta1, theta2 = theta2, g.old = g.old) %>%
       Vectorize
     
     test.vals <- runif(100,min = 0,max = Q)

@@ -11,8 +11,7 @@ estimateLogNormal<- function(){
                    method = 'L-BFGS-B', lower = c(0.01,0.01), 
                    control = list(fnscale = -1) # maximization option
   )
-  data.frame(mu = results$par[1], sigma = results$par[2])
-  
+  results$par
 }
 
 # Input: Dataframe of inventory and sales
@@ -31,11 +30,12 @@ initialCCPs<- function(data){
 estimatePrimitives <- function(){
   
   
-  par <- data.frame(mu = 0,
-                   sigma = 0,
-                   pr = 0,
-                   alpha = 0,
-                   eta = 0)
+#   par <- data.frame(mu = 0,
+#                    sigma = 0,
+#                    pr = 3,
+#                    alpha = .3,
+#                    eta = 4)
+  theta1 <- rep(0,2)
   
   # Repeat until the optimization doesn't throw an error because of bad initial values
   repeat{
@@ -45,16 +45,39 @@ estimatePrimitives <- function(){
       break
     } 
   }
-  par$mu <- temp$mu
-  par$sigma <- temp$sigma
+  theta1[1] <- temp[1]
+  theta1[2] <- temp[2]
   CCP <- initialCCPs(data)
   
   g.old <- chebappxf(g.init,dims = dims,intervals = c(0,Q), CCP = CCP) %>%
     Vectorize
   
-  f.old <- chebappxf(f,dims = dims,intervals = c(0,Q), par = par, g.old =  g.old) %>% 
+  f_hat <- function(){
+    chebappxf(f,dims = dims,intervals = c(0,Q), theta1 = theta1, theta2 = theta2, g.old =  g.old) %>% 
     Vectorize
+  }
   
-  g.old <- chebappxf(f,dims = dims,intervals = c(0,Q), par = par, f.old = f.old) %>% 
-    Vectorize
+  # Pseudo-Maximum Likelihood, doesn't yet work
+  PMLE <- function(theta2,data){
+    print(theta2)
+    log((data$q > 0) * g(data$i - data$s, theta2 = theta2, f.old = f_hat())  + 
+          (data$q == 0) * (1 - g(data$i - data$s, theta2 = theta2, f.old = f_hat()))) %>%
+      sum
+  }
+  
+  results <- optim(c(3,.3,4), PMLE, 
+                   data = data, 
+                   method = 'L-BFGS-B', lower = c(0.01,0.01,0.01),
+                   control = list(fnscale = -1) # maximization option
+  )
+  
 }
+
+
+
+
+
+
+
+
+
