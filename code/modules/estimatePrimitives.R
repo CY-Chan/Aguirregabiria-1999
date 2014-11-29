@@ -19,36 +19,35 @@ estimateLogNormal<- function(){
 # Output: Dataframe of CCPs corresponding to different (i-s) levels
 initialCCPs<- function(data){
   regData <- data.frame(replace = 1 * (data$q > 0),
-                       key = data$i - data$s)
+                        key = data$i - data$s)
   results <- npreg(replace ~ key, data = regData)
-  output <- data.frame(key = results$eval, CCP = results$mean) %>% 
-    unique %>%
-    arrange(key) %>%
-    select(key,CCP)
+  newdata <- data.frame(key = first(chebknots(dims = dims,intervals = c(0,Q))))
+  output <- data.frame(key = newdata$key, 
+                       prob_order = predict(results,newdata = newdata)) %>% 
+    arrange(key)
 }
 
 #This will mostly be taken out of the function and sourced in a separate file.
-estimatePrimitives<- function(){
+estimatePrimitives <- function(){
   
   
-  par<- data.frame(mu = 0,
+  par <- data.frame(mu = 0,
                    sigma = 0,
                    pr = 0,
                    alpha = 0,
                    eta = 0)
   
-  # This is an extremely ugly loop. Need to fix it.
-  while(1 ==1){
+  # Repeat until the optimization doesn't throw an error because of bad initial values
+  repeat{
     temp <- try(estimateLogNormal(), silent = TRUE)
-    
-    # Check if bad initial values. End EM operator and return -Inf if true.
+    # Check if bad initial values, if not break
     if (!('try-error' %in% class(temp))){
       break
     } 
   }
-  par$mu<- temp$mu
-  par$sigma<- temp$sigma
-  CCP<- initialCCPs(data)
+  par$mu <- temp$mu
+  par$sigma <- temp$sigma
+  CCP <- initialCCPs(data)
   
   g.old <- chebappxf(g.init,dims = dims,intervals = c(0,Q), CCP = CCP) %>%
     Vectorize
