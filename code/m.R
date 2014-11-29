@@ -13,3 +13,6 @@ gamma <- -digamma(1)
 
 # Simulate data
 data <- simdata(S = N)
+
+# Estimate parameters
+params <- estimateInvModel(data = data)
