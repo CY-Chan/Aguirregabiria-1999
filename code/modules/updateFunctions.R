@@ -10,7 +10,16 @@ f <- function(i, theta1, theta2, g.old){
   }
   
   form<- function(i,s){
-    (pi_(i,s,Q-i+s) - log(g.old(i-s)))
+    #print("in form")
+    #print("i")
+    #print(i)
+    #print("s")
+    #print(s)
+    #test = i -s
+    #print("test")
+    #print(test)
+    #print(g.old(i-s))
+    (pi_(i,s,Q-i+s) - log(max(g.old(i-s),10^-300)))
   }
   # Integrate in two parts. When demand <= i, and when demand >i
   first(integrate(function(s) form(i,s) * dlnorm(s,meanlog = theta1[1],sdlog = theta1[2]),0,i)) + 

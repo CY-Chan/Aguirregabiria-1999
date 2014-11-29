@@ -22,8 +22,7 @@ initialCCPs<- function(data){
   results <- npreg(replace ~ key, data = regData)
   newdata <- data.frame(key = first(chebknots(dims = dims,intervals = c(0,Q))))
   output <- data.frame(key = newdata$key, 
-                       prob_order = predict(results,newdata = newdata)) %>% 
-    arrange(key)
+                       prob_order = predict(results,newdata = newdata))
 }
 
 #This will mostly be taken out of the function and sourced in a separate file.
@@ -52,16 +51,19 @@ estimatePrimitives <- function(){
   g.old <- chebappxf(g.init,dims = dims,intervals = c(0,Q), CCP = CCP) %>%
     Vectorize
   
-  f_hat <- function(){
+  f_hat <- function(theta1, theta2, g.old){
     chebappxf(f,dims = dims,intervals = c(0,Q), theta1 = theta1, theta2 = theta2, g.old =  g.old) %>% 
     Vectorize
   }
   
   # Pseudo-Maximum Likelihood, doesn't yet work
   PMLE <- function(theta2,data){
+    #theta2 =c(theta2[1],theta2[2],4)
     print(theta2)
-    log((data$q > 0) * g(data$i - data$s, theta2 = theta2, f.old = f_hat())  + 
-          (data$q == 0) * (1 - g(data$i - data$s, theta2 = theta2, f.old = f_hat()))) %>%
+    log((data$q > 0) * g(data$i - data$s, theta2 = theta2, 
+                         f.old = f_hat(theta1 = theta1, theta2 = theta2, g.old =  g.old))  + 
+          (data$q == 0) * (1 - g(data$i - data$s, theta2 = theta2, 
+                                 f.old = f_hat(theta1 = theta1, theta2 = theta2, g.old =  g.old)))) %>%
       sum
   }
   
