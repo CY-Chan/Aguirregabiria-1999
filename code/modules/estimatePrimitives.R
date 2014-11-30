@@ -95,7 +95,27 @@ theta2
 }
 
 
+# estimateInvModel
+#
+# INPUT: data, data frame of observations
+#        conv.err, convergence criterion for pseudo MLE in estimateCostParameters() (default = 10^-5)   
+# OUTPUT: a list containing
+#         (1) estimate of mu (demand parameter)
+#         (2) estimate of sigma (demand parameter)
+#         (3) estimate of pr (cost parameter)
+#         (4) estimate of alpha (cost parameter)
+#         (5) estimate of eta (cost parameter)
 
+estimateInvModel <- function(data,conv.err = 10^-5){
+  theta1 <- estimateDemandParameters(data = data)
+  CCP <- estimateCCPs(data = data)
+  theta2 <- estimateCostParameters(theta1 = theta1,CCP = CCP,data,conv.err = conv.err)
+  list(mu = theta1[1],
+       sigma = theta1[2],
+       pr = theta2[1],
+       alpha = theta2[2],
+       eta = theta2[3])
+}
 
 
 
