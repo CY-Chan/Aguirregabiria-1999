@@ -79,7 +79,7 @@ estimateCostParameters <- function(theta1,CCP,data,conv.err = 10^-5){
     ),silent = TRUE)
     # Check if bad initial values. End optimization and try again if true.
     if ('try-error' %in% class(results)){
-      break
+      delta <- 1 + conv.err
     } else {
     theta2 <- results$par
     f.old <- chebappxf(f,dims,c(0,Q),theta1 = theta1, theta2 = theta2, g.old = g.old) %>%
